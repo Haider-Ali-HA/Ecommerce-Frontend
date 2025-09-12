@@ -12,7 +12,7 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="bg-base-100 border-r border-base-300">
+    <aside className="bg-base-100 border-r border-base-300 h-dvh">
       {/* Mobile top bar */}
       <div className="lg:hidden sticky top-0 z-20 flex items-center justify-between border-b border-base-300 bg-base-100 px-4 py-3">
         <span className="text-base font-semibold">Admin Menu</span>
