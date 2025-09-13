@@ -9,19 +9,14 @@ const client = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
-const extractError = (err) => {
-  const data = err?.response?.data;
-  if (typeof data === "string") return data;
-  return data?.message || err.message || "Request failed";
-};
-
 // Auth APIs
 export const registerUser = async (payload) => {
   try {
     const { data } = await client.post(`/auth/register`, payload);
     return data;
   } catch (err) {
-    throw new Error(extractError(err));
+    console.log(err);
+    throw err;
   }
 };
 
@@ -30,7 +25,8 @@ export const loginUser = async (payload) => {
     const { data } = await client.post(`/auth/login`, payload);
     return data;
   } catch (err) {
-    throw new Error(extractError(err));
+    console.log(err);
+    throw err;
   }
 };
 
@@ -39,7 +35,8 @@ export const verifyUser = async (payload) => {
     const { data } = await client.post(`/auth/verify`, payload);
     return data;
   } catch (err) {
-    throw new Error(extractError(err));
+    console.log(err);
+    throw err;
   }
 };
 
@@ -48,7 +45,8 @@ export const getProfile = async () => {
     const { data } = await client.get(`/auth/me`);
     return data;
   } catch (err) {
-    throw new Error(extractError(err));
+    console.log(err);
+    throw err;
   }
 };
 
