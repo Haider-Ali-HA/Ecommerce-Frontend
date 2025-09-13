@@ -11,6 +11,7 @@ import ManagerLayout from "./components/layout/ManagerLayout";
 import ManagerHome from "./pages/manager/ManagerHome";
 import LoginModal from "./components/modal/LoginModal";
 import RegisterModal from "./components/modal/RegisterModal";
+import VerifyTokenModal from "./components/modal/VerifyTokenModal";
 
 const App = () => {
   return (
@@ -38,6 +39,7 @@ const App = () => {
       {/* Mount modals so they are available globally */}
       <LoginModal id="login_modal" />
       <RegisterModal id="register_modal" />
+      <VerifyTokenModal id="verify_token_modal" />
     </div>
   );
 };

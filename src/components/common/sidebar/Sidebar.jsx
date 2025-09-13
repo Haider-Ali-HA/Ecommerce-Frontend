@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { SIDEBAR_ITEMS } from "../../../constants/sidebarConstants";
 import SidebarItem from "./SidebarItem";
 import SidebarDropdown from "./SidebarDropdown";
+import { Menu } from "lucide-react";
 
 const Sidebar = () => {
   const [openMobile, setOpenMobile] = useState(false);
@@ -22,8 +23,9 @@ const Sidebar = () => {
           onClick={() => setOpenMobile((v) => !v)}
           aria-expanded={openMobile}
           aria-controls="sidebar-menu"
+          aria-label={openMobile ? "Close menu" : "Open menu"}
         >
-          ☰
+          <Menu size={18} />
         </button>
       </div>
 

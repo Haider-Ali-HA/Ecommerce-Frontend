@@ -86,12 +86,7 @@ const Navbar = () => {
         >
           Login
         </button>
-        <button
-          className="btn btn-primary"
-          onClick={() => document.getElementById("register_modal")?.showModal()}
-        >
-          Register
-        </button>
+       
       </div>
     </div>
   );

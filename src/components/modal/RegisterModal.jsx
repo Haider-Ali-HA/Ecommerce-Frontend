@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "../../validation/authSchemas";
 import InputField from "../common/InputField";
+import { X } from "lucide-react";
+import { registerUser } from "../../services/authService";
+import toast from "react-hot-toast";
+import LoadingButton from "../common/LoadingButton";
+import Modal from "../common/Modal";
 
 const RegisterModal = ({ id = "register_modal" }) => {
   const methods = useForm({
@@ -11,53 +16,97 @@ const RegisterModal = ({ id = "register_modal" }) => {
     mode: "onTouched",
   });
 
-  const onSubmit = (data) => {
-    // eslint-disable-next-line no-console
-    console.log("Register submit:", data);
+  const [submitting, setSubmitting] = useState(false);
+
+  const onSubmit = async (data) => {
+    setSubmitting(true);
+    try {
+      const result = await registerUser(data);
+      // eslint-disable-next-line no-console
+      console.log("Registration result:", result);
+      toast.success(
+        result?.message || "Registration successful! Please verify your email."
+      );
+      methods.reset();
+      const dlg = document.getElementById(id);
+      dlg?.close();
+      // open verify token modal
+      const verifyDlg = document.getElementById("verify_token_modal");
+      verifyDlg?.showModal?.();
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error("Registration error:", err);
+      toast.error(err?.message || "Registration failed");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  // Open the login modal and close this register modal
+  const openLogin = () => {
     const dlg = document.getElementById(id);
     dlg?.close();
+    const login = document.getElementById("login_modal");
+    login?.showModal();
   };
 
   return (
-    <dialog id={id} className="modal">
-      <div className="modal-box">
-        <h3 className="mb-4 text-lg font-bold">Create account</h3>
-        <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(onSubmit)} noValidate>
-            <InputField
-              name="name"
-              label="Full Name"
-              type="text"
-              placeholder="John Doe"
-            />
-            <InputField
-              name="email"
-              label="Email"
-              type="email"
-              placeholder="you@example.com"
-            />
-            <InputField
-              name="password"
-              label="Password"
-              type="password"
-              placeholder="********"
-            />
-            <InputField
-              name="phone"
-              label="Phone Number"
-              type="tel"
-              placeholder="10-15 digits"
-            />
-            <button type="submit" className="btn btn-success mt-2 w-full">
-              Register
+    <Modal id={id}>
+      {/* Close button (top-right) */}
+      <button
+        type="button"
+        aria-label="Close dialog"
+        className="btn btn-ghost btn-sm absolute right-3 top-3"
+        onClick={() => document.getElementById(id)?.close()}
+      >
+        <X size={18} />
+      </button>
+      <h3 className="mb-4 text-lg font-bold">Create account</h3>
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onSubmit)} noValidate>
+          <InputField
+            name="name"
+            label="Full Name"
+            type="text"
+            placeholder="John Doe"
+          />
+          <InputField
+            name="email"
+            label="Email"
+            type="email"
+            placeholder="you@example.com"
+          />
+          <InputField
+            name="password"
+            label="Password"
+            type="password"
+            placeholder="********"
+          />
+          <InputField
+            name="phone"
+            label="Phone Number"
+            type="tel"
+            placeholder="10-15 digits"
+          />
+          <LoadingButton
+            type="submit"
+            className="btn-success mt-2 w-full"
+            isLoading={submitting}
+          >
+            {submitting ? "Registering..." : "Register"}
+          </LoadingButton>
+          <div className="mt-3 text-center">
+            <button
+              type="button"
+              className="btn btn-ghost text-sm"
+              onClick={openLogin}
+            >
+              Already have an account? Sign in
             </button>
-          </form>
-        </FormProvider>
-      </div>
-      <form method="dialog" className="modal-backdrop">
-        <button aria-label="Close">close</button>
-      </form>
-    </dialog>
+          </div>
+        </form>
+      </FormProvider>
+    </Modal>
   );
 };
 

@@ -52,4 +52,12 @@ export const registerSchema = z.object({
     .regex(/^\d{10,15}$/, "Phone must be 10 to 15 digits"),
 });
 
-export default { loginSchema, registerSchema };
+// 6-digit verification token
+export const verifyTokenSchema = z.object({
+  verifyToken: z
+    .string()
+    .trim()
+    .regex(/^\d{6}$/, "Verification code must be 6 digits"),
+});
+
+export default { loginSchema, registerSchema, verifyTokenSchema };
