@@ -7,6 +7,8 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   const { isAuthenticated, user } = useAuthStore();
   const role = user?.role;
 
+  console.log("ProtectedRoute - isAuthenticated:", isAuthenticated, "user role:", role, "allowedRoles:", allowedRoles);
+
   // Not authenticated: send to landing page
   if (!isAuthenticated) {
     return <Navigate to="/" replace />;
@@ -15,6 +17,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   // If specific roles are required and the user doesn't match, redirect to their home (or landing)
   if (Array.isArray(allowedRoles) && allowedRoles.length > 0) {
     if (!role || !allowedRoles.includes(role)) {
+      console.log("inside values", role, allowedRoles);
       return <Navigate to={getHomeRouteForRole(role)} replace />;
     }
   }

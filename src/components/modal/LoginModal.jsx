@@ -35,7 +35,9 @@ const LoginModal = ({ id = "login_modal" }) => {
         if (response?.user) {
           login(response.user);
           // Navigate to role-specific home
+          console.log("Navigating based on role:", response.user.role);
           const target = getHomeRouteForRole(response.user.role);
+          console.log("Navigating to:", target);
           navigate(target, { replace: true });
         }
         methods.reset();
@@ -97,6 +99,20 @@ const LoginModal = ({ id = "login_modal" }) => {
             type="password"
             placeholder="********"
           />
+          
+              <button
+                type="button"
+                className="btn btn-link text-sm w-full flex  justify-end"
+                onClick={() => {
+                  const dlg = document.getElementById(id);
+                  dlg?.close();
+                  document.getElementById("forgot_password_modal")?.showModal();
+                }}
+              >
+                Forgot password?
+              </button>
+         
+          
           <LoadingButton
             type="submit"
             className="btn-success mt-2 w-full"

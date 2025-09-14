@@ -60,4 +60,21 @@ export const verifyTokenSchema = z.object({
     .regex(/^\d{6}$/, "Verification code must be 6 digits"),
 });
 
-export default { loginSchema, registerSchema, verifyTokenSchema };
+export const forgotPasswordSchema = z.object({
+  email: z.string().email("Invalid email address"),
+});
+
+export const resetPasswordSchema = z.object({
+  resetPasswordToken: z
+    .string()
+    .trim()
+    .regex(/^\d{6}$/, "Reset token must be 6 digits"),
+  newPassword: passwordSchema,
+});
+
+export default {
+  loginSchema,
+  registerSchema,
+  verifyTokenSchema,
+  forgotPasswordSchema,
+};

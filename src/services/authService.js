@@ -50,6 +50,25 @@ export const logoutUser = async () => {
   }
 };
 
+export const forgotPassword = async (payload) => {
+  try {
+    const { data } = await client.post(`/auth/forgot-password`, payload);
+    return data;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+export const resetPassword = async (payload) => {
+  try {
+    const { data } = await client.post(`/auth/reset-password`, payload);
+    return data;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
 
 export const getProfile = async () => {
   try {

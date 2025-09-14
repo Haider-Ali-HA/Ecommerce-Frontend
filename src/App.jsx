@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import LandingPage from "./pages/LandingPage";
@@ -12,16 +12,24 @@ import ManagerHome from "./pages/manager/ManagerHome";
 import LoginModal from "./components/modal/LoginModal";
 import RegisterModal from "./components/modal/RegisterModal";
 import VerifyTokenModal from "./components/modal/VerifyTokenModal";
+import ForgotPasswordModal from "./components/modal/ForgotPasswordModal";
 import StaffHome from "./pages/staff/StaffHome";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
+import ResetPasswordModal from "./components/modal/ResetPasswordModal";
 
 const App = () => {
+  const location = useLocation();
+  const showFooter = location.pathname !== "/reset-password";
   return (
     <div>
       <Navbar />
+      <div className="absolute top-0 left-0 w-full">
+
+      
       <Routes>
         {/* auth modals are rendered at root; routes removed */}
+        <Route path="/reset-password" element={<ResetPasswordModal />} />
         <Route
           path="/"
           element={
@@ -40,31 +48,10 @@ const App = () => {
             </ProtectedRoute>
           }
         >
-          <Route
-            index
-            element={
-              <ProtectedRoute allowedRoles={["admin"]}>
-                <AdminHome />
-              </ProtectedRoute>
-            }
-          />
+          <Route index element={<AdminHome />} />
           <Route path="products">
-            <Route
-              path="add"
-              element={
-                <ProtectedRoute allowedRoles={["admin"]}>
-                  <AddProduct />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="update"
-              element={
-                <ProtectedRoute allowedRoles={["admin"]}>
-                  <UpdateProduct />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="add" element={<AddProduct />} />
+            <Route path="update" element={<UpdateProduct />} />
           </Route>
         </Route>
 
@@ -77,14 +64,7 @@ const App = () => {
             </ProtectedRoute>
           }
         >
-          <Route
-            index
-            element={
-              <ProtectedRoute allowedRoles={["manager"]}>
-                <ManagerHome />
-              </ProtectedRoute>
-            }
-          />
+          <Route index element={<ManagerHome />} />
         </Route>
         {/* staff routes  */}
 
@@ -97,12 +77,15 @@ const App = () => {
           }
         />
       </Routes>
+      </div>
 
-      <Footer />
+      {showFooter && <Footer />}
+
       {/* Mount modals so they are available globally */}
       <LoginModal id="login_modal" />
       <RegisterModal id="register_modal" />
       <VerifyTokenModal id="verify_token_modal" />
+      <ForgotPasswordModal id="forgot_password_modal" />
     </div>
   );
 };
