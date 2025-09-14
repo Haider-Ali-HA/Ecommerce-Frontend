@@ -1,7 +1,22 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import useAuthStore from "../store/authStore";
+import { logoutUser } from "../services/authService";
 
 const Navbar = () => {
+
+  const { isAuthenticated } = useAuthStore();
+
+
+ const handleLogout = async () => {
+  try {
+    await logoutUser(); // call backend to clear cookie
+    useAuthStore.getState().logout(); // clear Zustand state
+  } catch (err) {
+    console.error("Logout failed", err);
+  }
+};
+
   return (
     <div className="navbar bg-base-100 shadow-sm">
       <div className="navbar-start">
@@ -80,13 +95,23 @@ const Navbar = () => {
             <span className="badge badge-xs badge-primary indicator-item"></span>
           </div>
         </button>
-        <button
-          className="btn btn-soft mr-2"
-          onClick={() => document.getElementById("login_modal")?.showModal()}
-        >
-          Login
-        </button>
+
+        {isAuthenticated ?(
+          <button
+            className="btn btn-soft mr-2"
+            onClick={() => handleLogout()}
+          >
+            Logout
+          </button>
        
+        ):(
+             <button
+            className="btn btn-soft mr-2"
+            onClick={() => document.getElementById("login_modal")?.showModal()}
+          >
+            Login
+          </button>
+        )}
       </div>
     </div>
   );

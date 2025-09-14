@@ -12,6 +12,9 @@ import ManagerHome from "./pages/manager/ManagerHome";
 import LoginModal from "./components/modal/LoginModal";
 import RegisterModal from "./components/modal/RegisterModal";
 import VerifyTokenModal from "./components/modal/VerifyTokenModal";
+import StaffHome from "./pages/staff/StaffHome";
+import ProtectedRoute from "./components/ProtectedRoute";
+import PublicRoute from "./components/PublicRoute";
 
 const App = () => {
   return (
@@ -19,22 +22,82 @@ const App = () => {
       <Navbar />
       <Routes>
         {/* auth modals are rendered at root; routes removed */}
-        <Route path="/" element={<LandingPage />} />
+        <Route
+          path="/"
+          element={
+            <PublicRoute>
+              <LandingPage />
+            </PublicRoute>
+          }
+        />
 
         {/* admin routes */}
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<AdminHome />} />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AdminLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route
+            index
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminHome />
+              </ProtectedRoute>
+            }
+          />
           <Route path="products">
-            <Route path="add" element={<AddProduct />} />
-            <Route path="update" element={<UpdateProduct />} />
+            <Route
+              path="add"
+              element={
+                <ProtectedRoute allowedRoles={["admin"]}>
+                  <AddProduct />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="update"
+              element={
+                <ProtectedRoute allowedRoles={["admin"]}>
+                  <UpdateProduct />
+                </ProtectedRoute>
+              }
+            />
           </Route>
         </Route>
 
         {/* manager routes */}
-        <Route path="/manager" element={<ManagerLayout />}>
-          <Route index element={<ManagerHome />} />
+        <Route
+          path="/manager"
+          element={
+            <ProtectedRoute allowedRoles={["manager"]}>
+              <ManagerLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route
+            index
+            element={
+              <ProtectedRoute allowedRoles={["manager"]}>
+                <ManagerHome />
+              </ProtectedRoute>
+            }
+          />
         </Route>
+        {/* staff routes  */}
+
+        <Route
+          path="/staff"
+          element={
+            <ProtectedRoute allowedRoles={["staff"]}>
+              <StaffHome />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
+
       <Footer />
       {/* Mount modals so they are available globally */}
       <LoginModal id="login_modal" />

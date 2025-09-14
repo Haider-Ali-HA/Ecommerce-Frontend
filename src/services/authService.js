@@ -40,6 +40,17 @@ export const verifyUser = async (payload) => {
   }
 };
 
+export const logoutUser = async () => {
+  try {
+    const { data } = await client.post(`/auth/logout`);
+    return data;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+
 export const getProfile = async () => {
   try {
     const { data } = await client.get(`/auth/me`);

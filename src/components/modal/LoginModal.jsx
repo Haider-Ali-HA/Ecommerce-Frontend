@@ -9,6 +9,8 @@ import useAuthStore from "../../store/authStore";
 import { loginUser } from "../../services/authService";
 import LoadingButton from "../common/LoadingButton";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { getHomeRouteForRole } from "../../utils/routeHelpers";
 
 const LoginModal = ({ id = "login_modal" }) => {
   const methods = useForm({
@@ -19,6 +21,8 @@ const LoginModal = ({ id = "login_modal" }) => {
   const login = useAuthStore((s) => s.login);
   const [submitting, setSubmitting] = useState(false);
 
+  const navigate = useNavigate();
+
   const onSubmit = async (data) => {
     try {
       // eslint-disable-next-line no-console
@@ -28,8 +32,12 @@ const LoginModal = ({ id = "login_modal" }) => {
       if (response.success) {
         console.log("Login response:", response);
         toast.success("Login successful");
-        // login(response.user);
-        if (response?.user) login(response.user);
+        if (response?.user) {
+          login(response.user);
+          // Navigate to role-specific home
+          const target = getHomeRouteForRole(response.user.role);
+          navigate(target, { replace: true });
+        }
         methods.reset();
       }
 
