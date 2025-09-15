@@ -22,9 +22,9 @@ export const createManager = async (payload) => {
   }
 };
 
-export const getAllManagers = async () => {
+export const getAllManagers = async (page = 1, limit = 10) => {
   try {
-    const { data } = await client.get(`/admin/managers`);
+    const { data } = await client.get(`/admin/managers?page=${page}&limit=${limit}`);
     return data;
   } catch (err) {
     console.log(err);
