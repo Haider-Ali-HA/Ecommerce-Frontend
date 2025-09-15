@@ -49,7 +49,12 @@ const Pagination = ({
   const endRecord = totalRecords === 0 ? 0 : calculatedEnd;
 
   return (
-    <div className="flex flex-col items-center gap-3 mt-6">
+    <div className="flex justify-center md:justify-between flex-wrap   items-center gap-3 mt-6">
+        {/* Stats */}
+      <div className="text-sm text-gray-600">
+        Showing {startRecord} - {endRecord} of {totalRecords} items • Page{" "}
+        {currentPage} of {totalPages}
+      </div>
       <div className="flex items-center gap-2">
         {/* Previous Button */}
         <button
@@ -101,11 +106,7 @@ const Pagination = ({
         </button>
       </div>
 
-      {/* Stats */}
-      <div className="text-sm text-gray-600">
-        Showing {startRecord} - {endRecord} of {totalRecords} items • Page{" "}
-        {currentPage} of {totalPages}
-      </div>
+      
     </div>
   );
 };

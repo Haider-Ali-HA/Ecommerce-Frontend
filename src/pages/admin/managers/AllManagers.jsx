@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import ManagersTable from "../../../components/admin/ManagersTable";
 import Pagination from "../../../components/common/Pagination"; // <-- Our new component
 import ConfirmationModal from "../../../components/common/ConfirmationModal";
+import Loader from "../../../components/common/Loader";
 
 const AllManagers = () => {
   const [loading, setLoading] = useState(true);
@@ -98,16 +99,12 @@ const AllManagers = () => {
         </Link>
       </div>
 
-      {loading ? (
-        <div className="flex items-center justify-center py-16">
-          <span className="loading loading-spinner loading-lg text-primary" />
-        </div>
-      ) : (
         <>
           <ManagersTable
             managers={managers}
             onDelete={onDeleteRequest}
             deletingId={deletingId}
+            loading={loading}
           />
           <ConfirmationModal
             isOpen={confirmOpen}
@@ -127,7 +124,7 @@ const AllManagers = () => {
             pageSize={pagination.limit ?? limit}
           />
         </>
-      )}
+
     </div>
   );
 };
