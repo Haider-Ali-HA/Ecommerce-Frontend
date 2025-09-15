@@ -3,9 +3,18 @@
 
 export const NAV = {
   dashboard: "Dashboard",
+  // for managers section
+  managers: "Managers",
+  addManager: "Add Manager",
+  allManager: "All Managers",
+
+  // for products section
   products: "Products",
   addProduct: "Add Product",
   updateProduct: "Update Product",
+  deleteProduct: "Delete Product",
+
+  // for orders section
   orders: "Orders",
   customers: "Customers",
   settings: "Settings",
@@ -31,6 +40,20 @@ export const SIDEBAR_ITEMS = [
         key: "update-product",
         label: NAV.updateProduct,
         to: "/admin/products/update",
+      },
+    ],
+  },
+  {
+    key: "managers",
+    label: NAV.managers,
+    children: [
+      { key: "add-manager", label: NAV.addManager, to: "/admin/managers/add" },
+     
+      
+      {
+        key: "all-managers",
+        label: NAV.allManager,
+        to: "/admin/managers",
       },
     ],
   },

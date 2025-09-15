@@ -3,7 +3,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "../../validation/authSchemas";
 import InputField from "../common/InputField";
-import { X } from "lucide-react";
+import { Lock, Mail, Phone, User, X } from "lucide-react";
 import { registerUser } from "../../services/authService";
 import toast from "react-hot-toast";
 import LoadingButton from "../common/LoadingButton";
@@ -52,45 +52,45 @@ const RegisterModal = ({ id = "register_modal" }) => {
 
   return (
     <Modal id={id}>
-      {/* Close button (top-right) */}
-      <button
-        type="button"
-        aria-label="Close dialog"
-        className="btn btn-ghost btn-sm absolute right-3 top-3"
-        onClick={() => document.getElementById(id)?.close()}
-      >
-        <X size={18} />
-      </button>
-      <h3 className="mb-4 text-lg font-bold">Create account</h3>
+      <h3 className="mb-4 text-lg md:text-3xl text-text-primary text-center font-bold">
+        Create account
+      </h3>
+      <p className="mb-4 text-sm text-text-accent text-center">
+        Please fill in the details to create a new account.
+      </p>
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)} noValidate>
           <InputField
             name="name"
             label="Full Name"
             type="text"
-            placeholder="John Doe"
+            placeholder="Enter your full name"
+            icon={<User className="h-4 w-4" />}
           />
           <InputField
             name="email"
             label="Email"
             type="email"
-            placeholder="you@example.com"
+            icon={<Mail className="h-4 w-4" />}
+            placeholder="Enter your email"
           />
           <InputField
             name="password"
             label="Password"
             type="password"
-            placeholder="********"
+            placeholder="Enter your password"
+            icon={<Lock className="h-4 w-4" />}
           />
           <InputField
             name="phone"
             label="Phone Number"
             type="tel"
-            placeholder="10-15 digits"
+            placeholder="Enter your phone number"
+            icon={<Phone className="h-4 w-4" />}
           />
           <LoadingButton
             type="submit"
-            className="btn-success mt-2 w-full"
+            className="bg-primary text-text-secondary hover:bg-primary/80  mt-5 w-full"
             isLoading={submitting}
           >
             {submitting ? "Registering..." : "Register"}
@@ -98,7 +98,7 @@ const RegisterModal = ({ id = "register_modal" }) => {
           <div className="mt-3 text-center">
             <button
               type="button"
-              className="btn btn-ghost text-sm"
+              className=" text-text-primary font-semibold hover:text-text-primary/80 text-sm"
               onClick={openLogin}
             >
               Already have an account? Sign in

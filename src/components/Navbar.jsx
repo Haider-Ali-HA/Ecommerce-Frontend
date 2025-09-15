@@ -2,23 +2,22 @@ import React from "react";
 import { Link } from "react-router-dom";
 import useAuthStore from "../store/authStore";
 import { logoutUser } from "../services/authService";
+import PrimaryButton from "./common/PrimaryButton";
 
 const Navbar = () => {
-
   const { isAuthenticated } = useAuthStore();
 
-
- const handleLogout = async () => {
-  try {
-    await logoutUser(); // call backend to clear cookie
-    useAuthStore.getState().logout(); // clear Zustand state
-  } catch (err) {
-    console.error("Logout failed", err);
-  }
-};
+  const handleLogout = async () => {
+    try {
+      await logoutUser(); // call backend to clear cookie
+      useAuthStore.getState().logout(); // clear Zustand state
+    } catch (err) {
+      console.error("Logout failed", err);
+    }
+  };
 
   return (
-    <div className="navbar bg-base-100 shadow-sm relative top-0 left-0 z-50">
+    <div className="navbar bg-primary shadow-sm fixed top-0 left-0 z-50">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
@@ -55,7 +54,9 @@ const Navbar = () => {
         </div>
       </div>
       <div className="navbar-center">
-        <a className="btn btn-ghost text-xl">daisyUI</a>
+        <Link to="/" className=" text-xl">
+          Ecommerce
+        </Link>
       </div>
       <div className="navbar-end">
         <button className="btn btn-ghost btn-circle">
@@ -96,21 +97,20 @@ const Navbar = () => {
           </div>
         </button>
 
-        {isAuthenticated ?(
-          <button
-            className="btn btn-soft mr-2"
+        {isAuthenticated ? (
+          <PrimaryButton
+            className="bg-secondary text-text-primary hover:bg-secondary/80  px-3 py-1"
             onClick={() => handleLogout()}
           >
             Logout
-          </button>
-       
-        ):(
-             <button
-            className="btn btn-soft mr-2"
+          </PrimaryButton>
+        ) : (
+          <PrimaryButton
+            className="bg-secondary text-text-primary hover:bg-secondary/80  px-3 py-1"
             onClick={() => document.getElementById("login_modal")?.showModal()}
           >
             Login
-          </button>
+          </PrimaryButton>
         )}
       </div>
     </div>

@@ -7,8 +7,7 @@ import LoadingButton from "../common/LoadingButton";
 import toast from "react-hot-toast";
 import { forgotPassword as forgotPasswordApi } from "../../services/authService";
 import { forgotPasswordSchema } from "../../validation/authSchemas";
-
-
+import { Mail } from "lucide-react";
 
 const ForgotPasswordModal = ({ id = "forgot_password_modal" }) => {
   const methods = useForm({
@@ -36,18 +35,26 @@ const ForgotPasswordModal = ({ id = "forgot_password_modal" }) => {
 
   return (
     <Modal id={id}>
-      <h3 className="mb-4 text-lg font-bold">Forgot password</h3>
+      <h3 className="mb-7 text-lg md:text-3xl  text-text-primary text-center font-bold">
+        Reset your password
+      </h3>{" "}
+      <p className="mb-4 text-sm text-text-accent text-center">
+        Enter your email address and we'll send you a link to reset your
+        password.
+      </p>
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
           <InputField
             name="email"
             label="Email"
             type="email"
-            placeholder="you@example.com"
+            placeholder="Enter your email"
+            icon={<Mail className="h-4 w-4" />}
+            
           />
           <LoadingButton
             type="submit"
-            className="btn-success mt-2 w-full"
+                className="bg-primary text-text-secondary hover:bg-primary/80  mt-5 w-full"
             isLoading={submitting}
           >
             {submitting ? "Sending..." : "Send reset email"}

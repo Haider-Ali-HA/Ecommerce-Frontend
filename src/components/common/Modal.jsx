@@ -59,7 +59,13 @@ const Modal = ({ id, children, onClose, onOpen, className = "" }) => {
   }, []);
 
   const onBackdropClick = (e) => {
-    if (e.target === containerRef.current) closeAnimated();
+    // If the click is on the backdrop (container itself) or the overlay, close
+    if (
+      e.target === containerRef.current ||
+      e.target.dataset?.modalOverlay === "true"
+    ) {
+      closeAnimated();
+    }
   };
 
   // Render a wrapper div with the provided id so external code can find it
@@ -71,17 +77,18 @@ const Modal = ({ id, children, onClose, onOpen, className = "" }) => {
           role="dialog"
           aria-modal="true"
           className="fixed inset-0 z-[1000] flex items-center justify-center"
-          onMouseDown={onBackdropClick}
+          onClick={onBackdropClick}
         >
           {/* Overlay */}
           <div
-            className={`absolute inset-0 bg-black/60 transition-opacity duration-200 ease-in-out ${
+            data-modal-overlay="true"
+            className={`absolute inset-0 bg-primary/70 transition-opacity duration-200 ease-in-out ${
               show ? "opacity-100" : "opacity-0"
             }`}
           />
           {/* Content */}
           <div
-            className={`relative z-[1001] w-full max-w-md rounded-lg bg-base-100 text-base-content shadow-lg p-6 transform transition-all duration-200 ease-in-out ${
+            className={`relative z-[1001] w-full max-w-md rounded-lg bg-secondary text-base-content shadow-lg p-6 transform transition-all duration-200 ease-in-out ${
               show
                 ? "opacity-100 translate-y-0 scale-100"
                 : "opacity-0 translate-y-4 scale-95"

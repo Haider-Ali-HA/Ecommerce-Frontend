@@ -82,7 +82,7 @@ const VerifyTokenModal = ({ id = "verify_token_modal", email }) => {
       methods.reset();
       document.getElementById(id)?.close();
     } catch (err) {
-      toast.error(err?.message || "Invalid or expired code");
+      toast.error(err?.response.data.message || "Invalid or expired code");
     } finally {
       setSubmitting(false);
     }
@@ -101,17 +101,12 @@ const VerifyTokenModal = ({ id = "verify_token_modal", email }) => {
 
   return (
     <Modal id={id} onOpen={handleOpen}>
-      <button
-        type="button"
-        aria-label="Close dialog"
-        className="btn btn-ghost btn-sm absolute right-3 top-3"
-        onClick={() => document.getElementById(id)?.close()}
-      >
-        <X size={18} />
-      </button>
-      <h3 className="mb-4 text-lg font-bold">Verify your email</h3>
+   
+      <h3 className="mb-7 text-lg md:text-3xl  text-text-primary text-center font-bold">
+        Verify your email
+      </h3>
       {email && (
-        <p className="mb-2 text-sm opacity-80">
+        <p className="mb-4 text-sm text-text-accent text-center">
           We sent a 6-digit code to {email}.
         </p>
       )}
@@ -127,7 +122,7 @@ const VerifyTokenModal = ({ id = "verify_token_modal", email }) => {
                 ref={(el) => (inputRefs.current[i] = el)}
                 inputMode="numeric"
                 maxLength={1}
-                className="h-12 w-10 rounded-md border border-base-300 bg-base-100 text-center text-lg outline-none focus:border-primary"
+                className="h-12 w-10 rounded-md  bg-accent/20 text-center text-lg outline-none text-text-primary"
                 onChange={(e) => onChangeDigit(i, e)}
                 onKeyDown={(e) => onKeyDownDigit(i, e)}
               />
@@ -140,7 +135,7 @@ const VerifyTokenModal = ({ id = "verify_token_modal", email }) => {
           )}
           <LoadingButton
             type="submit"
-            className="btn-primary mt-2 w-full"
+            className="bg-primary text-text-secondary hover:bg-primary/80  mt-5 w-full"
             isLoading={submitting}
           >
             {submitting ? "Verifying..." : "Verify"}

@@ -92,9 +92,12 @@ const ResetPasswordModal = () => {
   };
 
   return (
-    <div className="h-dvh border w-full flex items-center justify-center ">
-      <div className="w-full max-w-md bg-base-100 border border-base-300 rounded-lg p-6 shadow-md">
-        <h3 className="mb-4 text-lg font-bold">Reset password</h3>
+    <div className="h-dvh  w-full flex items-center justify-center ">
+      <div className="w-full max-w-md bg-secondary rounded-lg p-6 shadow-md">
+      <h3 className="mb-7 text-lg md:text-3xl  text-text-primary text-center font-bold">Reset password</h3>
+      <p className="mb-4 text-sm text-text-accent text-center">
+        Enter the 6-digit code sent to your email and your new password.
+      </p>
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(onSubmit)} onPaste={onPaste}>
             <div className="mb-3 flex items-center justify-between gap-2">
@@ -103,8 +106,8 @@ const ResetPasswordModal = () => {
                   key={i}
                   ref={(el) => (inputRefs.current[i] = el)}
                   inputMode="numeric"
-                  maxLength={1}
-                  className="h-12 w-10 rounded-md border border-base-300 bg-base-100 text-center text-lg outline-none focus:border-primary"
+                    maxLength={1}
+                className="h-12 w-10 rounded-md  bg-accent/20 text-center text-lg outline-none text-text-primary"
                   onChange={(e) => onChangeDigit(i, e)}
                   onKeyDown={(e) => onKeyDownDigit(i, e)}
                 />
@@ -126,7 +129,7 @@ const ResetPasswordModal = () => {
 
             <LoadingButton
               type="submit"
-              className="btn-primary mt-2 w-full"
+               className="bg-primary text-text-secondary hover:bg-primary/80  mt-5 w-full"
               isLoading={submitting}
             >
               {submitting ? "Resetting..." : "Reset password"}

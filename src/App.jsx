@@ -17,6 +17,9 @@ import StaffHome from "./pages/staff/StaffHome";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
 import ResetPasswordModal from "./components/modal/ResetPasswordModal";
+import AddManager from "./pages/admin/managers/AddManager";
+import UpdateManager from "./pages/admin/managers/UpdateManager";
+import AllManagers from "./pages/admin/managers/AllManagers";
 
 const App = () => {
   const location = useLocation();
@@ -25,58 +28,62 @@ const App = () => {
     <div>
       <Navbar />
       <div className="absolute top-0 left-0 w-full">
+        <Routes>
+          {/* auth modals are rendered at root; routes removed */}
+          <Route path="/reset-password" element={<ResetPasswordModal />} />
+          <Route
+            path="/"
+            element={
+              <PublicRoute>
+                <LandingPage />
+              </PublicRoute>
+            }
+          />
 
-      
-      <Routes>
-        {/* auth modals are rendered at root; routes removed */}
-        <Route path="/reset-password" element={<ResetPasswordModal />} />
-        <Route
-          path="/"
-          element={
-            <PublicRoute>
-              <LandingPage />
-            </PublicRoute>
-          }
-        />
+          {/* admin routes */}
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<AdminHome />} />
+            <Route path="products">
+              <Route path="add" element={<AddProduct />} />
+              <Route path="update" element={<UpdateProduct />} />
+            </Route>
+            <Route path="managers">
+              <Route path="add" element={<AddManager />} />
+              <Route path="update" element={<UpdateManager />} />
 
-        {/* admin routes */}
-        <Route
-          path="/admin"
-          element={
-            <ProtectedRoute allowedRoles={["admin"]}>
-              <AdminLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<AdminHome />} />
-          <Route path="products">
-            <Route path="add" element={<AddProduct />} />
-            <Route path="update" element={<UpdateProduct />} />
+              <Route path="" element={<AllManagers />} />
+            </Route>
           </Route>
-        </Route>
 
-        {/* manager routes */}
-        <Route
-          path="/manager"
-          element={
-            <ProtectedRoute allowedRoles={["manager"]}>
-              <ManagerLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<ManagerHome />} />
-        </Route>
-        {/* staff routes  */}
+          {/* manager routes */}
+          <Route
+            path="/manager"
+            element={
+              <ProtectedRoute allowedRoles={["manager"]}>
+                <ManagerLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<ManagerHome />} />
+          </Route>
+          {/* staff routes  */}
 
-        <Route
-          path="/staff"
-          element={
-            <ProtectedRoute allowedRoles={["staff"]}>
-              <StaffHome />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
+          <Route
+            path="/staff"
+            element={
+              <ProtectedRoute allowedRoles={["staff"]}>
+                <StaffHome />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
       </div>
 
       {showFooter && <Footer />}

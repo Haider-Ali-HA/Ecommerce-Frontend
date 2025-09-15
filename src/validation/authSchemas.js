@@ -48,8 +48,19 @@ export const registerSchema = z.object({
   phone: z
     .string()
     .trim()
-    // 10 to 15 digits (international formats often fall here). Adjust if your needs differ.
-    .regex(/^\d{10,15}$/, "Phone must be 10 to 15 digits"),
+    // Accept Pakistani mobile numbers in two allowed formats:
+    // - Local format: 11 digits starting with '03' (e.g. 03123456789)
+    // - With country code: 12 digits starting with '92' (e.g. 923123456789)
+    .refine((val) => {
+      // Only digits allowed
+      if (!/^\d+$/.test(val)) return false;
+      // Local (no country code): 11 digits, starts with 03
+      if (/^03\d{9}$/.test(val)) return true;
+      // With country code 92: 12 digits, starts with 92 then 3
+      if (/^92?3\d{9}$/.test(val) && val.length === 12 && val.startsWith("92"))
+        return true;
+      return false;
+    }, "Phone must be a valid Pakistani mobile number (e.g. 03123456789 or 923123456789)"),
 });
 
 // 6-digit verification token

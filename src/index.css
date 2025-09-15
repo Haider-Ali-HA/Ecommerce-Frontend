@@ -1,22 +1,60 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+:root {
+  /* background colors  */
+  --color-primary: #212529;
+  --color-secondary: #f8f9fa;
+  --color-accent: #909398;
+  --color-neutral: #eef0f2;
+  --color-tertiary: #15181d;
+
+  /* text colors */
+  --color-text-primary: #212529;
+  --color-text-secondary: #f8f9fa;
+  --color-text-accent: #909398;
+  --color-text-neutral: #eff3f6;
+  --color-text-tertiary: #15181d;
+
+  /* border colors */
+  --color-border-primary: #212529;
+  --color-border-secondary: #f8f9fa;
+  --color-border-accent: #909398;
+  --color-border-neutral: #eff3f6;
+  --color-border-tertiary: #15181d;
+
+  --color-error: #dc3545;
+  --color-success: #28a745;
+  --color-warning: #ffc107;
+  --color-info: #1755b8;
+}
+
 @theme {
   /* background colors  */
   --color-primary: #212529;
   --color-secondary: #f8f9fa;
   --color-accent: #adb5bd;
-  --color-neutral: #ced4da;
+  --color-neutral: #eff3f6;
+  --color-tertiary: #15181d;
 
   /* text colors */
   --color-text-primary: #212529;
   --color-text-secondary: #f8f9fa;
   --color-text-accent: #6c757d;
+  --color-text-neutral: #eff3f6;
+  --color-text-tertiary: #15181d;
 
   /* border colors */
   --color-border-primary: #212529;
   --color-border-secondary: #f8f9fa;
   --color-border-accent: #adb5bd;
+  --color-border-neutral: #eff3f6;
+  --color-border-tertiary: #15181d;
+
+  --color-error: #dc3545;
+  --color-success: #28a745;
+  --color-warning: #ffc107;
+   --color-info: #1755b8;
 }
 
 @layer base {

@@ -21,7 +21,7 @@ const LoadingButton = ({
   return (
     <button
       type={type}
-      className={`btn inline-flex items-center justify-center gap-2 ${className}`}
+      className={` py-3 rounded inline-flex items-center justify-center gap-2 transition-all duration-100 ${className}`}
       disabled={disabled || isLoading}
       {...rest}
     >

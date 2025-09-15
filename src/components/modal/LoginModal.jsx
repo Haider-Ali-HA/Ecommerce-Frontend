@@ -3,7 +3,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "../../validation/authSchemas";
 import InputField from "../common/InputField";
-import { X } from "lucide-react";
+import { X, Mail, Lock } from "lucide-react";
 import Modal from "../common/Modal";
 import useAuthStore from "../../store/authStore";
 import { loginUser } from "../../services/authService";
@@ -76,46 +76,47 @@ const LoginModal = ({ id = "login_modal" }) => {
   return (
     <Modal id={id}>
       {/* Close button (top-right) */}
-      <button
-        type="button"
-        aria-label="Close dialog"
-        className="btn btn-ghost btn-sm absolute right-3 top-3"
-        onClick={() => document.getElementById(id)?.close()}
-      >
-        <X size={18} />
-      </button>
-      <h3 className="mb-4 text-lg font-bold">Sign in</h3>
+
+      <h3 className="mb-4 text-lg md:text-3xl text-text-primary text-center font-bold">
+        Sign in
+      </h3>
+      <p className="mb-4 text-sm text-text-accent text-center">
+        Welcome back! Please enter your credentials.
+      </p>
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)} noValidate>
           <InputField
             name="email"
             label="Email"
             type="email"
-            placeholder="you@example.com"
+            placeholder="Enter your email"
+            icon={<Mail className="h-4 w-4" />}
           />
           <InputField
             name="password"
             label="Password"
             type="password"
-            placeholder="********"
+            placeholder="Enter your password"
+            icon={<Lock className="h-4 w-4" />}
           />
-          
-              <button
-                type="button"
-                className="btn btn-link text-sm w-full flex  justify-end"
-                onClick={() => {
-                  const dlg = document.getElementById(id);
-                  dlg?.close();
-                  document.getElementById("forgot_password_modal")?.showModal();
-                }}
-              >
-                Forgot password?
-              </button>
-         
-          
+
+          <span className="w-full flex justify-end">
+            <button
+              type="button"
+              className="text-text-primary font-semibold hover:text-text-primary/80  w-fit text-sm  "
+              onClick={() => {
+                const dlg = document.getElementById(id);
+                dlg?.close();
+                document.getElementById("forgot_password_modal")?.showModal();
+              }}
+            >
+              Forgot password?
+            </button>
+          </span>
+
           <LoadingButton
             type="submit"
-            className="btn-success mt-2 w-full"
+            className="bg-primary text-text-secondary hover:bg-primary/80  mt-5 w-full"
             isLoading={submitting}
           >
             {submitting ? "Logging in..." : "Log In"}
@@ -123,7 +124,7 @@ const LoginModal = ({ id = "login_modal" }) => {
           <div className="mt-3 text-center">
             <button
               type="button"
-              className="btn btn-ghost text-sm"
+              className=" text-text-primary font-semibold hover:text-text-primary/80 text-sm"
               onClick={openRegister}
             >
               Don't have an account? Create one

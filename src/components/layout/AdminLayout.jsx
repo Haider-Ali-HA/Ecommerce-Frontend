@@ -4,7 +4,7 @@ import Sidebar from "../common/sidebar/Sidebar";
 
 const AdminLayout = () => {
   return (
-    <div className="min-h-screen bg-base-200 text-base-content">
+    <div className="min-h-screen bg-secondary mt-16 text-base-content">
       <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr]">
         <div className="lg:h-screen lg:sticky lg:top-0">
           <Sidebar />
