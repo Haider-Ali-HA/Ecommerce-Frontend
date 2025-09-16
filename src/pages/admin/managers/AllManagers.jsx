@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { getAllManagers, deleteManager } from "../../../services/adminService";
+import {
+  getAllManagers,
+  deleteManager,
+  searchManagersData,
+} from "../../../services/adminService";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import ManagersTable from "../../../components/admin/ManagersTable";
 import Pagination from "../../../components/common/Pagination"; // <-- Our new component
 import ConfirmationModal from "../../../components/common/ConfirmationModal";
 import Loader from "../../../components/common/Loader";
+import SearchInputField from "../../../components/common/SearchInputField";
+import { Search } from "lucide-react";
 
 const AllManagers = () => {
   const [loading, setLoading] = useState(true);
@@ -87,44 +93,72 @@ const AllManagers = () => {
     }
   };
 
+  const handleSearch = async (query) => {
+    console.log("Search query:", query);
+
+     
+    try {
+      const data = await searchManagersData(query, page, limit);
+
+      console.log("Search results:", data);
+      setManagers(data.managers || []);
+     
+    } catch (error) {
+      toast.error("Search failed. Please try again.");
+      console.error("Search error:", error);
+    }
+    // Implement search functionality here, e.g., call a search API
+    // For now, just log the query
+  };
+
   return (
     <div className="min-h-screen mt-6 space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-text-primary">All Managers</h1>
-        <Link
-          to="/admin/managers/add"
-          className="px-4 py-2 rounded bg-primary text-text-secondary hover:bg-primary/80"
-        >
-          Add Manager
-        </Link>
+        {/* Add search input */}
+
+        <div className="flex items-center gap-2">
+          <SearchInputField
+            type="text"
+            placeholder="Search Managers..."
+            onChange={(e) => handleSearch(e.target.value)}
+            className="bg-primary outline-none"
+            icon={<Search className="h-4 w-4" />}
+          />
+          <Link
+            to="/admin/managers/add"
+            className="px-4 py-2 rounded bg-primary text-text-secondary hover:bg-primary/80"
+          >
+            Add Manager
+          </Link>
+        </div>
       </div>
 
-        <>
-          <ManagersTable
-            managers={managers}
-            onDelete={onDeleteRequest}
-            deletingId={deletingId}
-            loading={loading}
-          />
-          <ConfirmationModal
-            isOpen={confirmOpen}
-            title="Delete Manager"
-            message="Are you sure you want to delete this manager? This action cannot be undone."
-            confirmText="Delete"
-            cancelText="Cancel"
-            onConfirm={confirmDelete}
-            onCancel={() => setConfirmOpen(false)}
-            loading={deletingId !== null}
-          />
-          <Pagination
-            currentPage={page}
-            totalPages={pagination.totalPages}
-            onPageChange={setPage}
-            totalRecords={pagination.total ?? pagination.totalRecords ?? 0}
-            pageSize={pagination.limit ?? limit}
-          />
-        </>
-
+      <>
+        <ManagersTable
+          managers={managers}
+          onDelete={onDeleteRequest}
+          deletingId={deletingId}
+          loading={loading}
+        />
+        <ConfirmationModal
+          isOpen={confirmOpen}
+          title="Delete Manager"
+          message="Are you sure you want to delete this manager? This action cannot be undone."
+          confirmText="Delete"
+          cancelText="Cancel"
+          onConfirm={confirmDelete}
+          onCancel={() => setConfirmOpen(false)}
+          loading={deletingId !== null}
+        />
+        <Pagination
+          currentPage={page}
+          totalPages={pagination.totalPages}
+          onPageChange={setPage}
+          totalRecords={pagination.total ?? pagination.totalRecords ?? 0}
+          pageSize={pagination.limit ?? limit}
+        />
+      </>
     </div>
   );
 };

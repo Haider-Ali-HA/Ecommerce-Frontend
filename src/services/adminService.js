@@ -24,7 +24,19 @@ export const createManager = async (payload) => {
 
 export const getAllManagers = async (page = 1, limit = 10) => {
   try {
-    const { data } = await client.get(`/admin/managers?page=${page}&limit=${limit}`);
+    const { data } = await client.get(
+      `/admin/managers?page=${page}&limit=${limit}`
+    );
+    return data;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+export const searchManagersData = async (query, page = 1, limit = 10) => {
+  try {
+    const { data } = await client.get(`/admin/managers/search?query=${query}&page=${page}&limit=${limit}`);
     return data;
   } catch (err) {
     console.log(err);
@@ -68,4 +80,5 @@ export default {
   getManagerById,
   updateManager,
   deleteManager,
+  searchManagersData,
 };
