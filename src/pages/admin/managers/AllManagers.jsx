@@ -9,7 +9,6 @@ import { Link } from "react-router-dom";
 import ManagersTable from "../../../components/admin/ManagersTable";
 import Pagination from "../../../components/common/Pagination"; // <-- Our new component
 import ConfirmationModal from "../../../components/common/ConfirmationModal";
-import Loader from "../../../components/common/Loader";
 import SearchInputField from "../../../components/common/SearchInputField";
 import { Search } from "lucide-react";
 import DropDown from "../../../components/common/DropDown";
@@ -24,6 +23,7 @@ const AllManagers = () => {
   const [limit] = useState(10); // default limit
   const [pagination, setPagination] = useState({ totalPages: 1, total: 0 });
   const [selectedStatus, setSelectedStatus] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const fetchManagers = async () => {
     try {
@@ -96,13 +96,17 @@ const AllManagers = () => {
   };
 
   const handleSearch = async (query) => {
-    console.log("Search query:", query);
+    setSearchQuery(query);
 
     try {
-      const data = await searchManagersData(query,selectedStatus, page, limit);
+      const data = await searchManagersData(query, selectedStatus, page, limit);
 
-      console.log("Search results:", data);
       setManagers(data.managers || []);
+      setPagination({
+        totalPages: data.pagination?.totalPages ?? 1,
+        total: data.pagination?.total ?? 0,
+        limit: data.pagination?.limit ?? limit,
+      });
     } catch (error) {
       toast.error("Search failed. Please try again.");
       console.error("Search error:", error);
@@ -113,10 +117,15 @@ const AllManagers = () => {
 
   // getManagersByStatus
   const handleStatusFilter = async (status) => {
+    setSelectedStatus(status);
     try {
-      const data = await searchManagersData("", status, page, limit);
-      console.log("Status filter results:", data);
+      const data = await searchManagersData(searchQuery, status, page, limit);
       setManagers(data.managers || []);
+      setPagination({
+        totalPages: data.pagination?.totalPages ?? 1,
+        total: data.pagination?.total ?? 0,
+        limit: data.pagination?.limit ?? limit,
+      });
     } catch (error) {
       toast.error("Failed to filter managers by status");
       console.error("Status filter error:", error);
@@ -125,33 +134,39 @@ const AllManagers = () => {
   const handleStatusChange = (status) => {
     setSelectedStatus(status);
     handleStatusFilter(status);
-    console.log("Selected status:", status);
   };
 
   return (
     <div className="min-h-screen mt-6 space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-text-primary">All Managers</h1>
+      <div className="flex items-center justify-center md:justify-between w-full flex-col md:flex-row gap-4">
+        <h1 className="text-2xl font-bold text-center md:text-start  text-text-primary   h-full w-full">
+          All Managers
+        </h1>
         {/* Add search input */}
 
-        <div className="flex items-center gap-2">
-          <SearchInputField
-            type="text"
-            placeholder="Search Managers..."
-            onChange={(e) => handleSearch(e.target.value)}
-            className="bg-primary outline-none"
-            icon={<Search className="h-4 w-4" />}
-          />
-          <DropDown
-            className="bg-primary outline-none"
-            onStatusChange={handleStatusChange}
-          />
-          <Link
-            to="/admin/managers/add"
-            className="px-4 py-2 rounded bg-primary text-text-secondary hover:bg-primary/80"
-          >
-            Add Manager
-          </Link>
+        <div className="flex items-center gap-2 w-full flex-col md:flex-row     ">
+          <div className="w-full ">
+            <SearchInputField
+              type="text"
+              placeholder="Search Managers..."
+              onChange={(e) => handleSearch(e.target.value)}
+              className="bg-primary outline-none w-full "
+              icon={<Search className="h-4 w-4" />}
+            />
+          </div>
+          
+          <div className="flex gap-2   w-full">
+            <DropDown
+              className="bg-primary !outline-none  w-full md:w-fit "
+              onStatusChange={handleStatusChange}
+            />
+            <Link
+              to="/admin/managers/add"
+              className="px-4 py-2 w-full md:min-w-38 rounded text-center bg-primary text-text-secondary hover:bg-primary/80"
+            >
+              Add Manager
+            </Link>
+          </div>
         </div>
       </div>
 

@@ -49,7 +49,7 @@ const ManagersTable = ({ managers = [], onDelete, deletingId, loading }) => {
                 const isDark = idx % 2 === 1;
                 const rowClass = isDark
                   ? "bg-primary text-text-secondary"
-                  : "bg-secondary text-text-primary";
+                  : "bg-neutral text-text-primary";
                 return (
                   <tr key={m._id} className={rowClass}>
                     <th>{idx + 1}</th>
@@ -63,7 +63,7 @@ const ManagersTable = ({ managers = [], onDelete, deletingId, loading }) => {
                         </span>
                       ) : (
                         <span className="text-error bg-error/40 px-4 py-1 rounded-full">
-                          Not Verified
+                          Unverified
                         </span>
                       )}
                     </td>

@@ -7,7 +7,7 @@ const DropDown = ({ className, onStatusChange }) => {
     <select
       defaultValue=""
       onChange={toggleDropdown}
-      className={`select select-ghost ${className}`}
+      className={`select select-ghost  ${className}`}
     >
       <option value="" >
         Status

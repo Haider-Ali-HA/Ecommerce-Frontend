@@ -50,6 +50,7 @@ export const getAllManagers = async (page = 1, limit = 10) => {
   // };
 
 export const searchManagersData = async (query,status, page = 1, limit = 10) => {
+  console.log("Searching managers with query:", query, "and status:", status);
   try {
     const { data } = await client.get(
       `/admin/managers/search?query=${query}&status=${status}&page=${page}&limit=${limit}`

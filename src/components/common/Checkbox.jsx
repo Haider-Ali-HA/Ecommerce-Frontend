@@ -20,7 +20,7 @@ const Checkbox = ({ name, label, className = "" }) => {
     <label className={`flex items-center gap-2 cursor-pointer ${className}`}>
       <input
         type="checkbox"
-        className="checkbox checkbox-primary"
+        className=" checkbox checkbox-sm checkbox-primary w-5 h-5"
         {...register(name)}
       />
       <span className="text-text-primary select-none">{label}</span>
