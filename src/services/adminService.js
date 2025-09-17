@@ -34,9 +34,26 @@ export const getAllManagers = async (page = 1, limit = 10) => {
   }
 };
 
-export const searchManagersData = async (query, page = 1, limit = 10) => {
+  // export const getManagersByStatus = async (status, page = 1, limit = 10) => {
+  //   console.log("Fetching managers by status:", status);
+  //   try {
+  //     // Backend exposes a dedicated route for status filtering: /admin/managers/status?status=...
+  //     const { data } = await client.get(
+  //       `/admin/managers/status?status=${status}&page=${page}&limit=${limit}`
+  //     );
+  //     console.log("Fetched data:", data);
+  //     return data;
+  //   } catch (err) {
+  //     console.log(err);
+  //     throw err;
+  //   }
+  // };
+
+export const searchManagersData = async (query,status, page = 1, limit = 10) => {
   try {
-    const { data } = await client.get(`/admin/managers/search?query=${query}&page=${page}&limit=${limit}`);
+    const { data } = await client.get(
+      `/admin/managers/search?query=${query}&status=${status}&page=${page}&limit=${limit}`
+    );
     return data;
   } catch (err) {
     console.log(err);

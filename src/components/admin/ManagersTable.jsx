@@ -21,7 +21,7 @@ const ManagersTable = ({ managers = [], onDelete, deletingId, loading }) => {
             <th className="text-text-secondary">Name</th>
             <th className="text-text-secondary">Email</th>
             <th className="text-text-secondary">Phone</th>
-            <th className="text-text-secondary">Verify</th>
+            <th className="text-text-secondary">Status</th>
             <th className="text-right text-text-secondary">Actions</th>
           </tr>
         </thead>

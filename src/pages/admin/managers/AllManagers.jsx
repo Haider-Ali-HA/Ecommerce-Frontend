@@ -12,6 +12,7 @@ import ConfirmationModal from "../../../components/common/ConfirmationModal";
 import Loader from "../../../components/common/Loader";
 import SearchInputField from "../../../components/common/SearchInputField";
 import { Search } from "lucide-react";
+import DropDown from "../../../components/common/DropDown";
 
 const AllManagers = () => {
   const [loading, setLoading] = useState(true);
@@ -22,6 +23,7 @@ const AllManagers = () => {
   const [page, setPage] = useState(1);
   const [limit] = useState(10); // default limit
   const [pagination, setPagination] = useState({ totalPages: 1, total: 0 });
+  const [selectedStatus, setSelectedStatus] = useState("");
 
   const fetchManagers = async () => {
     try {
@@ -96,19 +98,34 @@ const AllManagers = () => {
   const handleSearch = async (query) => {
     console.log("Search query:", query);
 
-     
     try {
-      const data = await searchManagersData(query, page, limit);
+      const data = await searchManagersData(query,selectedStatus, page, limit);
 
       console.log("Search results:", data);
       setManagers(data.managers || []);
-     
     } catch (error) {
       toast.error("Search failed. Please try again.");
       console.error("Search error:", error);
     }
     // Implement search functionality here, e.g., call a search API
     // For now, just log the query
+  };
+
+  // getManagersByStatus
+  const handleStatusFilter = async (status) => {
+    try {
+      const data = await searchManagersData("", status, page, limit);
+      console.log("Status filter results:", data);
+      setManagers(data.managers || []);
+    } catch (error) {
+      toast.error("Failed to filter managers by status");
+      console.error("Status filter error:", error);
+    }
+  };
+  const handleStatusChange = (status) => {
+    setSelectedStatus(status);
+    handleStatusFilter(status);
+    console.log("Selected status:", status);
   };
 
   return (
@@ -124,6 +141,10 @@ const AllManagers = () => {
             onChange={(e) => handleSearch(e.target.value)}
             className="bg-primary outline-none"
             icon={<Search className="h-4 w-4" />}
+          />
+          <DropDown
+            className="bg-primary outline-none"
+            onStatusChange={handleStatusChange}
           />
           <Link
             to="/admin/managers/add"
