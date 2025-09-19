@@ -1,16 +1,18 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuthStore from "../store/authStore";
 import { logoutUser } from "../services/authService";
 import PrimaryButton from "./common/PrimaryButton";
 
 const Navbar = () => {
   const { isAuthenticated } = useAuthStore();
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
       await logoutUser(); // call backend to clear cookie
       useAuthStore.getState().logout(); // clear Zustand state
+      navigate("/")
     } catch (err) {
       console.error("Logout failed", err);
     }

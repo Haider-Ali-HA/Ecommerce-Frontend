@@ -2,21 +2,32 @@ import React from "react";
 import useAuthStore from "../store/authStore";
 import { Navigate } from "react-router-dom";
 import { getHomeRouteForRole } from "../utils/routeHelpers";
+import { getProfile } from "../services/authService";
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
-  const { isAuthenticated, user } = useAuthStore();
+  const { isAuthenticated, user, isCheckingAuth } = useAuthStore();
   const role = user?.role;
-
-  console.log("ProtectedRoute - isAuthenticated:", isAuthenticated, "user role:", role, "allowedRoles:", allowedRoles);
+ 
+  console.log(
+    "ProtectedRoute - isAuthenticated:",
+    isAuthenticated,
+    "user role:",
+    role,
+    "allowedRoles:",
+    allowedRoles
+  );
 
   // Not authenticated: send to landing page
-  if (!isAuthenticated) {
+  if (!isAuthenticated ) {
     return <Navigate to="/" replace />;
   }
 
+  // if (isCheckingAuth) {
+  //   return <div>Loading...</div>;
+  // }
   // If specific roles are required and the user doesn't match, redirect to their home (or landing)
   if (Array.isArray(allowedRoles) && allowedRoles.length > 0) {
-    if (!role || !allowedRoles.includes(role)) {
+    if ((!role) || !allowedRoles.includes(role)) {
       console.log("inside values", role, allowedRoles);
       return <Navigate to={getHomeRouteForRole(role)} replace />;
     }

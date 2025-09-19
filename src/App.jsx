@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import LandingPage from "./pages/LandingPage";
@@ -20,10 +20,43 @@ import ResetPasswordModal from "./components/modal/ResetPasswordModal";
 import AddManager from "./pages/admin/managers/AddManager";
 import UpdateManager from "./pages/admin/managers/UpdateManager";
 import AllManagers from "./pages/admin/managers/AllManagers";
+import { getProfile } from "./services/authService";
+import useAuthStore from "./store/authStore";
+import ErrorPage from "./pages/ErrorPage";
+import { useNavigate } from "react-router-dom";
 
 const App = () => {
+  const {  setIsCheckingAuth ,isAuthenticated} = useAuthStore();
   const location = useLocation();
   const showFooter = location.pathname !== "/reset-password";
+  const navigate = useNavigate();
+
+   const fetchUserProfile = async () => {
+        setIsCheckingAuth(true); // start checking
+    try {
+      const response = await getProfile("/auth/me");
+      // console.log("Profile fetch response:", response);
+      if (response.success) {
+        
+     
+        console.log("User profile data:", response.user.role);
+          setIsCheckingAuth(true);
+      } 
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+      console.log("Redirecting to landing page due to error.");
+      setIsCheckingAuth(false);
+      navigate("/error");
+    }
+    // Logic to fetch user profile if needed
+  };
+
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      fetchUserProfile();
+    }
+  }, []);
+
   return (
     <div>
       <Navbar />
@@ -83,6 +116,7 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          <Route path="/error" element={<ErrorPage />} />
         </Routes>
       </div>
 
