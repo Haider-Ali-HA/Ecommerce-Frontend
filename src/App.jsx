@@ -24,24 +24,24 @@ import { getProfile } from "./services/authService";
 import useAuthStore from "./store/authStore";
 import ErrorPage from "./pages/ErrorPage";
 import { useNavigate } from "react-router-dom";
+import NotificationWidget from "./components/notifications/NotificationWidget"; // added
+import NotificationToasts from "./components/notifications/NotificationToasts";
 
 const App = () => {
-  const {  setIsCheckingAuth ,isAuthenticated} = useAuthStore();
+  const { setIsCheckingAuth, isAuthenticated } = useAuthStore();
   const location = useLocation();
   const showFooter = location.pathname !== "/reset-password";
   const navigate = useNavigate();
 
-   const fetchUserProfile = async () => {
-        setIsCheckingAuth(true); // start checking
+  const fetchUserProfile = async () => {
+    setIsCheckingAuth(true); // start checking
     try {
       const response = await getProfile("/auth/me");
       // console.log("Profile fetch response:", response);
       if (response.success) {
-        
-     
         console.log("User profile data:", response.user.role);
-          setIsCheckingAuth(true);
-      } 
+        setIsCheckingAuth(true);
+      }
     } catch (error) {
       console.error("Error fetching user profile:", error);
       console.log("Redirecting to landing page due to error.");
@@ -121,6 +121,10 @@ const App = () => {
       </div>
 
       {showFooter && <Footer />}
+
+      {/* Notification widget */}
+      <NotificationWidget />
+      <NotificationToasts />
 
       {/* Mount modals so they are available globally */}
       <LoginModal id="login_modal" />
